@@ -1,0 +1,10 @@
+{
+    "emmet.preferences": {
+
+    },
+    "emmet.includeLanguages": {
+        "javascript": "javascript",
+        "typescript": "typescriptlang",
+    },
+    "typescript.tsdk": "node_modules\\typescript\\lib",
+}
