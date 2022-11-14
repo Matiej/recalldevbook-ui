@@ -10,6 +10,7 @@ import { CatalogService } from './catalog/catalog.service';
 })
 export class AppComponent implements OnInit {
   title = 'recalldevbookUI';
+  public bookList: Book[];
 
   constructor(private catalogServ: CatalogService) { }
 
@@ -20,14 +21,7 @@ export class AppComponent implements OnInit {
   public getCatalog(): void {
     this.catalogServ.getCatalog('255').subscribe({
       next: (importedBooks: Book[]) => {
-        console.log("Got books from backend");
-        importedBooks.forEach(book => {
-          console.log(book.available);
-          console.log(book.id);
-          console.log(book.title);
-          console.log("just object json: ")
-          console.log(book);
-        });
+        this.bookList = importedBooks;
       },
       error: (error: HttpErrorResponse) => console.error('error message for getCatalgo: ' + error.message)
     })
