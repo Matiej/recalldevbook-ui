@@ -1,6 +1,6 @@
 import { Injectable, OnInit } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { HttpClient, HttpParams, HttpResponse } from '@angular/common/http';
+import { ConnectableObservable, Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { Book } from './book';
 import * as e from 'express';
@@ -25,7 +25,10 @@ export class CatalogService {
           book.coverUrl = this.apiServerUrl + this.apiCover + '/' + book.bookCoverId;
           newbook.push(book);
         });
-      });
+      }).catch(error => {
+        console.error('http catalog errir: ' + error.message)
+      })
+
     return of(newbook);
   }
 }
