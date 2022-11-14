@@ -1,5 +1,6 @@
 export class Author{
   private _name: string;
+  private _lastName: string;
 
   public get name(): string {
     return this._name;
@@ -8,4 +9,10 @@ export class Author{
     this._name = value;
   }
 
+  public get lastName(): string {
+    return this._lastName;
+  }
+  public set lastName(value: string) {
+    this._lastName = value;
+  }
 }
