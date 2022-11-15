@@ -1,5 +1,5 @@
-@import 'https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css';
-@import 'https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css';
+@import "https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css";
+@import "https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css";
 
 body {
   margin-top: 20px;
@@ -8,8 +8,8 @@ body {
 
 .card {
   border: none;
-  -webkit-box-shadow: 0 1px 2px 0 rgba(0, 0, 0, .05);
-  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, .05);
+  -webkit-box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
   margin-bottom: 30px;
 }
 
@@ -17,14 +17,19 @@ body {
   width: 60px;
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   margin: 0 0 10px;
   font-weight: 600;
 }
 
 .social-links li a {
   -webkit-border-radius: 50%;
-  background-color: rgba(89, 206, 181, .85);
+  background-color: rgba(89, 206, 181, 0.85);
   border-radius: 50%;
   color: #fff;
   display: inline-block;
@@ -37,4 +42,15 @@ h1, h2, h3, h4, h5, h6 {
 
 a {
   color: #707070;
+}
+
+.nav-item {
+  font-size: x-large;
+  font-style: italic !important;
+}
+
+.navbar-brand {
+  font-size: xx-large;
+  font-style: italic;
+  color: rgb(189, 194, 194) !important;
 }
