@@ -45,12 +45,12 @@ a {
 }
 
 .nav-item {
-  font-size: x-large;
+  font-size: 20px;
   font-style: italic !important;
 }
 
 .navbar-brand {
-  font-size: xx-large;
+  font-size: 26px;
   font-style: italic;
   color: rgb(189, 194, 194) !important;
 }
