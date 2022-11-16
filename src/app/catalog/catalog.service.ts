@@ -18,17 +18,6 @@ export class CatalogService {
 
   public getCatalog(limit: string): Observable<Book[]> {
     const limitParam = new HttpParams().set('limit', limit);
-    const newbook: Book[] = [];
-    this.http.get<Book[]>(`${this.apiServerUrl}/catalog`, { params: limitParam })
-      .forEach(el => {
-        el.forEach(book => {
-          book.coverUrl = this.apiServerUrl + this.apiCover + '/' + book.bookCoverId;
-          newbook.push(book);
-        });
-      }).catch((error: HttpErrorResponse) => {
-        console.error('http catalog errir: ' + error.message)
-      })
-
-    return of(newbook);
+    return this.http.get<Book[]>(`${this.apiServerUrl}/catalog`, { params: limitParam })
   }
 }

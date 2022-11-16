@@ -25,11 +25,17 @@
         >
       </li>
     </ul>
-    <a class="btn btn-dark px-1" href="https://github.com/Matiej" role="button">
+    <a
+      class="btn btn-dark px-1"
+      target="_blank"
+      href="https://github.com/Matiej"
+      role="button"
+    >
       <i class="icon"><img src="/assets/github-circle.png" /></i>
     </a>
     <a
       class="btn btn-dark px-4"
+      target="_blank"
       href="https://www.linkedin.com/in/matiej/"
       role="button"
     >
@@ -58,7 +64,7 @@
           <div class="col-3">
             <a href=""
               ><img
-                src="{{ book.coverUrl }}"
+                src="{{ book.bookCoverUrl }}"
                 alt=""
                 class="shadow img-fluid rounded w-60"
             /></a>
@@ -66,8 +72,8 @@
           <div class="col-9 card-title align-self-center mb-0">
             <h5>{{ book.title }}</h5>
             <p class="m-0">
-              <span *ngFor="let author of book.linkedAuthors"
-                >{{ author.name }} {{ author.lastName }}<br
+              <span *ngFor="let author of book.authors"
+                >{{ author.fullName }}<br
               /></span>
             </p>
           </div>
