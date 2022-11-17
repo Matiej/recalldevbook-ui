@@ -1,6 +1,5 @@
 export const environment = {
   production: true,
-  apiBaseUrl: 'http://localhost:8080',
-  apiCover: '/uploads'
+  apiBaseUrl: 'https://springrecallbookapp.herokuapp.com:8080'
 };
 
