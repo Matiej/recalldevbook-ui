@@ -10,9 +10,7 @@ import { of } from 'rxjs';
   providedIn: 'root'
 })
 export class CatalogService {
-
   private apiServerUrl = environment.apiBaseUrl;
-  private apiCover = environment.apiCover;
 
   constructor(private http: HttpClient) { }
 
