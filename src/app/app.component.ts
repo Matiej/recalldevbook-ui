@@ -13,11 +13,12 @@ export class AppComponent implements OnInit {
   title = 'recalldevbookUI';
   public bookList: Book[];
 
-  constructor(private catalogServ: CatalogService, private healthService: HealthcheckService) { }
+  constructor(private catalogServ: CatalogService, private healthService: HealthcheckService) {
+    this.healthService.healthCheckJob();
+  }
 
   ngOnInit(): void {
     this.getCatalog();
-    this.healthService.healthCheckJob();
   }
 
   public getCatalog(): void {
