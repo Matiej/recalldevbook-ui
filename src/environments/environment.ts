@@ -5,7 +5,7 @@
 export const environment = {
   production: false,
   apiBaseUrl: 'http://localhost:8080',
-  cronHealthCheck: '0/5 * * * * *'
+  cronHealthCheck: '0 0/1 * * * *'
 };
 
 /*
