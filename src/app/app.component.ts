@@ -2,6 +2,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { Book } from './catalog/book';
 import { CatalogService } from './catalog/catalog.service';
+import { HealthcheckService } from './admin/healthcheck.service';
 
 @Component({
   selector: 'app-root',
@@ -12,10 +13,11 @@ export class AppComponent implements OnInit {
   title = 'recalldevbookUI';
   public bookList: Book[];
 
-  constructor(private catalogServ: CatalogService) { }
+  constructor(private catalogServ: CatalogService, private healthService: HealthcheckService) { }
 
   ngOnInit(): void {
     this.getCatalog();
+    this.healthService.healthCheckJob();
   }
 
   public getCatalog(): void {
