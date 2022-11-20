@@ -4,7 +4,6 @@ import { Book } from './catalog/book';
 import { CatalogService } from './catalog/catalog.service';
 import { HealthcheckService } from './admin/healthcheck.service';
 import { CartItem } from './cart/cartitem';
-import { getCurrentRequest } from 'loader-utils';
 
 @Component({
   selector: 'app-root',
@@ -16,6 +15,8 @@ export class AppComponent implements OnInit {
   public bookList: Book[];
   public isLoading: boolean = false;
   public cartItemList: CartItem[] = [];
+  private intervalId: any;
+  private readonly INTERVAL_TIME: number = 3000;
 
   constructor(private catalogServ: CatalogService, private healthService: HealthcheckService) {
     this.healthService.healthCheckJob();
@@ -27,14 +28,28 @@ export class AppComponent implements OnInit {
   }
 
   public getCatalog(): void {
-    console.log(this.isLoading);
+    //todo add backend method to get all wihout limit
     this.catalogServ.getCatalog('255').subscribe({
       next: (importedBooks: Book[]) => {
         this.bookList = importedBooks;
-        this.isLoading = false;
+        if (importedBooks) {
+          this.isLoading = false;
+          if (this.intervalId) {
+            clearInterval(this.intervalId);
+          }
+        }
       },
-      error: (error: HttpErrorResponse) => console.error('error message for getCatalgo: ' + error.message)
+      error: (error: HttpErrorResponse) => {
+        this.interv();
+        console.error('error message for getCatalgo: ' + error.message)
+      }
     })
+  }
+
+  private interv(): void {
+    if (!this.intervalId) {
+      this.intervalId = setInterval(() => this.ngOnInit(), this.INTERVAL_TIME);
+    }
   }
 
   public addToCart(book: Book): void {
@@ -49,6 +64,6 @@ export class AppComponent implements OnInit {
 
   public countCartItems(): number {
     return this.cartItemList
-    .reduce((sum: number, current: CartItem) => sum + current.quantity, 0);
+      .reduce((sum: number, current: CartItem) => sum + current.quantity, 0);
   }
 }

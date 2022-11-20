@@ -22,7 +22,7 @@
           href="#"
           style="margin-right: 10px; color: white"
         >
-          <i class="fa fa-shopping-cart" aria-hidden="true"><img  /> Cart (0)</i>
+          <i class="fa fa-shopping-cart" aria-hidden="true"><img /> Cart ({{countCartItems()}})</i>
         </a>
       </li>
       <li class="nav-item active mr-3">
@@ -118,14 +118,6 @@
               (click)="addToCart(book)"
               ><i class="fa fa-cart-arrow-down"></i>
             </a>
-            <!-- <a
-              href="#"
-              class="btn btn-secondary tooltips"
-              data-placement="top"
-              data-toggle="tooltip"
-              data-original-title="Delete"
-              ><i class="fa fa-times"></i
-            ></a> -->
           </div>
         </div>
       </div>
