@@ -4,6 +4,7 @@ import { Book } from './catalog/book';
 import { CatalogService } from './catalog/catalog.service';
 import { HealthcheckService } from './admin/healthcheck.service';
 import { CartItem } from './cart/cartitem';
+import { FormControl, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-root',
@@ -17,6 +18,7 @@ export class AppComponent implements OnInit {
   public cartItemList: CartItem[] = [];
   private intervalId: any;
   private readonly INTERVAL_TIME: number = 3000;
+  orderFormular: FormGroup;
 
   constructor(private catalogServ: CatalogService, private healthService: HealthcheckService) {
     this.healthService.healthCheckJob();
@@ -25,6 +27,18 @@ export class AppComponent implements OnInit {
   ngOnInit(): void {
     this.isLoading = true;
     this.getCatalog();
+    this.initForm();
+  }
+
+  private initForm(): void{
+    this.orderFormular = new FormGroup({
+      name: new FormControl(null),
+      email: new FormControl(null),
+      phone: new FormControl(null),
+      street: new FormControl(null),
+      city: new FormControl(null),
+      zip: new FormControl(null)
+    });
   }
 
   public getCatalog(): void {
@@ -53,11 +67,11 @@ export class AppComponent implements OnInit {
   }
 
   public addToCart(book: Book): void {
-    const current: CartItem = this.cartItemList.find(item => item.bookId == book.id) as CartItem;
+    const current: CartItem = this.cartItemList.find(item => item.book.id == book.id) as CartItem;
     if (current) {
       current.quantity += 1;
     } else {
-      this.cartItemList.push({ bookId: book.id, quantity: 1 } as CartItem)
+      this.cartItemList.push({ book: book, quantity: 1 } as CartItem)
     }
     console.log('Cart: ' + JSON.stringify(this.cartItemList));
   }
@@ -65,5 +79,39 @@ export class AppComponent implements OnInit {
   public countCartItems(): number {
     return this.cartItemList
       .reduce((sum: number, current: CartItem) => sum + current.quantity, 0);
+  }
+
+  public totalCartAmount(): number {
+    return this.cartItemList
+      .reduce((sum: number, current: CartItem) => sum + current.book.price * current.quantity, 0);
+  }
+
+  public clearCart() {
+    this.cartItemList = [];
+  }
+
+  public onOpenModal(mode: string): void {
+    console.log('CART ONMODAL');
+    const container = document.getElementById('main-container');
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.style.display = 'none';
+    button.setAttribute('data-toggle', 'modal');
+    if (mode === 'cart') {
+      button.setAttribute('data-target', '#cartModal');
+    }
+    if (mode === 'order') {
+      button.setAttribute('data-target', '#orderModal');
+    }
+    if (container != null) {
+      console.log('container no null' + container);
+      container.appendChild(button);
+    }
+    button.click();
+  }
+
+  public onOrderSubmit(): void {
+    console.log('FORMULAR VIEW');
+    console.log(this.orderFormular);
   }
 }
