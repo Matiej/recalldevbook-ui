@@ -14,7 +14,6 @@ export class HealthcheckService {
   }
 
   public healthCheckJob(): void {
-    console.log('init HC');
     var myJob = new CronJob(
       this.cronHealthCheck,
       async () => {
