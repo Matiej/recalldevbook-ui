@@ -1,13 +1,14 @@
+import { Book } from "../catalog/book";
+
 export class CartItem {
-  private _bookId: number;
+  private _book: Book;
   private _quantity: number;
 
-  public get bookId(): number {
-    return this._bookId;
+  public get book(): Book {
+    return this._book;
   }
-
-  public set bookId(value: number) {
-    this._bookId = value;
+  public set Book(value: Book) {
+    this._book = value;
   }
 
   public get quantity(): number {
