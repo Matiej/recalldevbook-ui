@@ -1,299 +1,314 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-  <a class="navbar-brand" href="#">
-    <img
-      src="/assets/logo.png"
-      class="me-2"
-      height="35"
-      alt=""
-      loading="lazy"
-    />
-    RecallDevBookApp</a
-  >
-  <div class="collapse navbar-collapse" id="navbarSupportedContent">
-    <ul class="navbar-nav mr-auto">
-      <li class="nav-item active ml-2 mr-3">
-        <a class="nav-link active" href="#"
-          >Home <span class="sr-only">(current)</span></a
-        >
-      </li>
-      <li class="nav-item active ml-2 mr-3">
-        <a
-          href="#"
-          (click)="onOpenModal('cart')"
-          class="nav-link active"
-          style="margin-right: 10px; color: white"
-        >
-          <i class="fa fa-shopping-cart" aria-hidden="true"
-            ><img /> Cart ({{ countCartItems() }})</i
-          >
-        </a>
-      </li>
-      <li class="nav-item active mr-3">
-        <a class="nav-link" href="#">Add Book</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true"
-          >Disabled</a
-        >
-      </li>
-    </ul>
-    <a
-      class="btn btn-dark px-1"
-      target="_blank"
-      href="https://github.com/Matiej"
-      role="button"
-    >
-      <i class="icon"><img src="/assets/github-circle.png" /></i>
-    </a>
-    <a
-      class="btn btn-dark px-4"
-      target="_blank"
-      href="https://www.linkedin.com/in/matiej/"
-      role="button"
-    >
-      <i class="icon"><img src="/assets/linkedin-box.png" /></i>
-    </a>
-
-    <form class="form-inline my-2 my-lg-0">
-      <input
-        class="form-control mr-sm-2"
-        type="search"
-        placeholder="Search books..."
-        aria-label="Search"
+<div
+  [ngClass]="{
+    'maincont-white': isLoading === true,
+    'maincont-color': isLoading === false
+  }"
+>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand" href="#">
+      <img
+        src="/assets/logo.png"
+        class="me-2"
+        height="35"
+        alt=""
+        loading="lazy"
       />
-      <button class="btn btn-outline-primary btn-lg my-2 my-sm-1" type="submit">
-        Search
-      </button>
-    </form>
-  </div>
-</nav>
-
-<div class="container" id="main-container">
-  <div class="text-center" *ngIf="isLoading">
-    <img class="img-loading" src="assets/Loader.gif" />
-    <img class="img-loading" src="assets/be_patient1.gif" />
-  </div>
-  <div class="row">
-    <div *ngFor="let book of bookList" class="col-md-6 col-xl-6">
-      <div class="card m-b-30">
-        <div class="card-body row">
-          <div class="col-3">
-            <a href=""
-              ><img
-                src="{{ book.bookCoverUrl }}"
-                alt=""
-                class="shadow img-fluid rounded w-60"
-            /></a>
-          </div>
-          <div class="col-9 card-title align-self-center mb-0">
-            <h5>{{ book.title }}</h5>
-            <p class="m-0">
-              <span *ngFor="let author of book.authors"
-                >{{ author.fullName }}<br
-              /></span>
-            </p>
-          </div>
-        </div>
-        <ul class="list-group list-group-flush">
-          <li class="list-group-item">
-            <i class="fa fa-envelope float-right"></i>Price :
-            <a href="#">$ {{ book.price }}</a>
-          </li>
-          <li class="list-group-item">
-            <i class="fa fa-phone float-right"></i>Available :
-            {{ book.available }}
-          </li>
-        </ul>
-        <div class="card-body">
-          <div class="float-right btn-group btn-group-sm">
-            <a
-              href="#"
-              class="btn btn-primary tooltips"
-              data-placement="top"
-              data-toggle="tooltip"
-              data-original-title="Add to Cart"
-              (click)="addToCart(book)"
-              ><i class="fa fa-cart-arrow-down"></i>
-            </a>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-<!-- Modal CART -->
-<div
-  class="modal fade"
-  id="cartModal"
-  tabindex="-1"
-  role="dialog"
-  aria-hidden="true"
->
-  <div class="modal-dialog" role="document">
-    <div class="modal-content" style="background-color: #e0dcdc">
-      <div class="modal-header">
-        <h5 class="modal-title">
-          Number of items in the cart: ({{ countCartItems() }})
-        </h5>
-        <button
-          type="button"
-          class="close"
-          data-dismiss="modal"
-          aria-label="Close"
-        >
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <div *ngFor="let item of cartItemList">
-          <img
-            src="{{ item.book.bookCoverUrl }}"
-            alt=""
-            class="shadow img-fluid rounded w-60 float-right"
-          />
-          <h4>{{ item.book.title }}</h4>
-          <h6>
-            <span *ngFor="let author of item.book.authors; last as isLast"
-              >{{ author.fullName }}<span *ngIf="!isLast">, </span></span
+      RecallDevBookApp</a
+    >
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item active ml-2 mr-3">
+          <a class="nav-link active" href="#"
+            >Home <span class="sr-only">(current)</span></a
+          >
+        </li>
+        <li class="nav-item active ml-2 mr-3">
+          <a
+            href="#"
+            (click)="onOpenModal('cart')"
+            class="nav-link active"
+            style="margin-right: 10px; color: white"
+          >
+            <i class="fa fa-shopping-cart" aria-hidden="true"
+              ><img /> Cart ({{ countCartItems() }})</i
             >
-          </h6>
-          {{ item.quantity }} copies for $ {{ item.book.price | number: "1.2" }}
-          <hr />
+          </a>
+        </li>
+        <li class="nav-item active mr-3">
+          <a class="nav-link" href="#">Add Book</a>
+        </li>
+        <li class="nav-item">
+          <a
+            class="nav-link disabled"
+            href="#"
+            tabindex="-1"
+            aria-disabled="true"
+            >Disabled</a
+          >
+        </li>
+      </ul>
+      <a
+        class="btn btn-dark px-1"
+        target="_blank"
+        href="https://github.com/Matiej"
+        role="button"
+      >
+        <i class="icon"><img src="/assets/github-circle.png" /></i>
+      </a>
+      <a
+        class="btn btn-dark px-4"
+        target="_blank"
+        href="https://www.linkedin.com/in/matiej/"
+        role="button"
+      >
+        <i class="icon"><img src="/assets/linkedin-box.png" /></i>
+      </a>
+
+      <form class="form-inline my-2 my-lg-0">
+        <input
+          class="form-control mr-sm-2"
+          type="search"
+          placeholder="Search books..."
+          aria-label="Search"
+        />
+        <button
+          class="btn btn-outline-primary btn-lg my-2 my-sm-1"
+          type="submit"
+        >
+          Search
+        </button>
+      </form>
+    </div>
+  </nav>
+
+  <div class="container" id="main-container">
+    <div class="text-center" *ngIf="isLoading">
+      <img class="img-loading" src="assets/Loader1.gif" />
+      <img class="img-loading" src="assets/loading10.gif" />
+    </div>
+    <div class="row">
+      <div *ngFor="let book of bookList" class="col-md-6 col-xl-6">
+        <div class="card m-b-30">
+          <div class="card-body row">
+            <div class="col-3">
+              <a href=""
+                ><img
+                  src="{{ book.bookCoverUrl }}"
+                  alt=""
+                  class="shadow img-fluid rounded w-60"
+              /></a>
+            </div>
+            <div class="col-9 card-title align-self-center mb-0">
+              <h5>{{ book.title }}</h5>
+              <p class="m-0">
+                <span *ngFor="let author of book.authors"
+                  >{{ author.fullName }}<br
+                /></span>
+              </p>
+            </div>
+          </div>
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item">
+              <i class="fa fa-envelope float-right"></i>Price :
+              <a href="#">$ {{ book.price }}</a>
+            </li>
+            <li class="list-group-item">
+              <i class="fa fa-phone float-right"></i>Available :
+              {{ book.available }}
+            </li>
+          </ul>
+          <div class="card-body">
+            <div class="float-right btn-group btn-group-sm">
+              <a
+                href="#"
+                class="btn btn-primary tooltips"
+                data-placement="top"
+                data-toggle="tooltip"
+                data-original-title="Add to Cart"
+                (click)="addToCart(book)"
+                ><i class="fa fa-cart-arrow-down"></i>
+              </a>
+            </div>
+          </div>
         </div>
-        <h5>Total order amount</h5>
-        <h4>$ {{ totalCartAmount() | number: "1.2" }}</h4>
-      </div>
-      <div class="modal-footer">
-        <button
-          type="button"
-          (click)="clearCart()"
-          class="btn btn-danger align-left"
-          data-dismiss="modal"
-        >
-          Clear Cart
-        </button>
-        <button
-          type="button"
-          (click)="onOpenModal('order')"
-          class="btn btn-primary"
-        >
-          Finish Order
-        </button>
-        <button
-          id="close-cart-button"
-          type="button"
-          class="btn btn-secondary"
-          data-dismiss="modal"
-        >
-          Close
-        </button>
       </div>
     </div>
   </div>
-</div>
-
-<!-- Modal ORDER-->
-<div
-  class="modal fade"
-  id="orderModal"
-  tabindex="-1"
-  role="dialog"
-  aria-hidden="true"
->
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">Order details</h5>
-        <button
-          type="button"
-          class="close"
-          data-dismiss="modal"
-          aria-label="Close"
-        >
-          <span aria-hidden="true">&times;</span>
-        </button>
+  <!-- Modal CART -->
+  <div
+    class="modal fade"
+    id="cartModal"
+    tabindex="-1"
+    role="dialog"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog" role="document">
+      <div class="modal-content" style="background-color: #e0dcdc">
+        <div class="modal-header">
+          <h5 class="modal-title">
+            Number of items in the cart: ({{ countCartItems() }})
+          </h5>
+          <button
+            type="button"
+            class="close"
+            data-dismiss="modal"
+            aria-label="Close"
+          >
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div *ngFor="let item of cartItemList">
+            <img
+              src="{{ item.book.bookCoverUrl }}"
+              alt=""
+              class="shadow img-fluid rounded w-60 float-right"
+            />
+            <h4>{{ item.book.title }}</h4>
+            <h6>
+              <span *ngFor="let author of item.book.authors; last as isLast"
+                >{{ author.fullName }}<span *ngIf="!isLast">, </span></span
+              >
+            </h6>
+            {{ item.quantity }} copies for $
+            {{ item.book.price | number: "1.2" }}
+            <hr />
+          </div>
+          <h5>Total order amount</h5>
+          <h4>$ {{ totalCartAmount() | number: "1.2" }}</h4>
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            (click)="clearCart()"
+            class="btn btn-danger align-left"
+            data-dismiss="modal"
+          >
+            Clear Cart
+          </button>
+          <button
+            type="button"
+            (click)="onOpenModal('order')"
+            class="btn btn-primary"
+          >
+            Finish Order
+          </button>
+          <button
+            id="close-cart-button"
+            type="button"
+            class="btn btn-secondary"
+            data-dismiss="modal"
+          >
+            Close
+          </button>
+        </div>
       </div>
-      <div class="modal-body">
-        <form [formGroup]="orderFormular" (ngSubmit)="onOrderSubmit()">
-          <div class="form-group">
+    </div>
+  </div>
+
+  <!-- Modal ORDER-->
+  <div
+    class="modal fade"
+    id="orderModal"
+    tabindex="-1"
+    role="dialog"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Order details</h5>
+          <button
+            type="button"
+            class="close"
+            data-dismiss="modal"
+            aria-label="Close"
+          >
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form [formGroup]="orderFormular" (ngSubmit)="onOrderSubmit()">
             <div class="form-group">
-              <label for="nameField">Name</label>
+              <div class="form-group">
+                <label for="nameField">Name</label>
+                <input
+                  formControlName="name"
+                  placeholder="firstname and lastname"
+                  type="text"
+                  class="form-control"
+                  id="nameField"
+                  required
+                />
+              </div>
+              <label for="emailField">Email address</label>
               <input
-                formControlName="name"
-                placeholder="firstname and lastname"
-                type="text"
+                n
+                formControlName="email"
+                placeholder="email address"
+                type="email"
                 class="form-control"
-                id="nameField"
+                id="emailField"
                 required
               />
             </div>
-            <label for="emailField">Email address</label>
-            <input
-              n
-              formControlName="email"
-              placeholder="email address"
-              type="email"
-              class="form-control"
-              id="emailField"
-              required
-            />
-          </div>
-          <div class="form-group">
-            <label for="phoneField">Phone</label>
-            <input
-              formControlName="phone"
-              placeholder="phone number"
-              type="text"
-              class="form-control"
-              id="phoneField"
-              required
-            />
-          </div>
-          <div class="form-group">
-            <label for="streetField">Street</label>
-            <input
-              formControlName="street"
-              placeholder="street and build numer/flat"
-              type="text"
-              class="form-control"
-              id="streetField"
-              required
-            />
-          </div>
-          <div class="form-group">
-            <label for="cityField">City</label>
-            <input
-              formControlName="city"
-              placeholder="city"
-              type="text"
-              class="form-control"
-              id="cityField"
-              required
-            />
-          </div>
-          <div class="form-group">
-            <label for="zipCodeField">ZIP Code</label>
-            <input
-              formControlName="zip"
-              placeholder="zip-code"
-              type="text"
-              class="form-control"
-              id="zipCodeField"
-              required
-            />
-          </div>
-          <div class="modal-footer">
-            <button
-              id="cancel-order-button"
-              type="button"
-              class="btn btn-secondary"
-              data-dismiss="modal"
-            >
-              Cancel
-            </button>
-            <button type="submit" class="btn btn-primary">Submit</button>
-          </div>
-        </form>
+            <div class="form-group">
+              <label for="phoneField">Phone</label>
+              <input
+                formControlName="phone"
+                placeholder="phone number"
+                type="text"
+                class="form-control"
+                id="phoneField"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <label for="streetField">Street</label>
+              <input
+                formControlName="street"
+                placeholder="street and build numer/flat"
+                type="text"
+                class="form-control"
+                id="streetField"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <label for="cityField">City</label>
+              <input
+                formControlName="city"
+                placeholder="city"
+                type="text"
+                class="form-control"
+                id="cityField"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <label for="zipCodeField">ZIP Code</label>
+              <input
+                formControlName="zip"
+                placeholder="zip-code"
+                type="text"
+                class="form-control"
+                id="zipCodeField"
+                required
+              />
+            </div>
+            <div class="modal-footer">
+              <button
+                id="cancel-order-button"
+                type="button"
+                class="btn btn-secondary"
+                data-dismiss="modal"
+              >
+                Cancel
+              </button>
+              <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
   </div>
