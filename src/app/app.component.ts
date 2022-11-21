@@ -1,10 +1,11 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Book } from './catalog/book';
 import { CatalogService } from './catalog/catalog.service';
 import { HealthcheckService } from './admin/healthcheck.service';
 import { CartItem } from './cart/cartitem';
 import { FormControl, FormGroup } from '@angular/forms';
+import { OrderService } from './order/order.service';
 
 @Component({
   selector: 'app-root',
@@ -20,7 +21,9 @@ export class AppComponent implements OnInit {
   private readonly INTERVAL_TIME: number = 3000;
   orderFormular: FormGroup;
 
-  constructor(private catalogServ: CatalogService, private healthService: HealthcheckService) {
+  constructor(private catalogServ: CatalogService,
+    private healthService: HealthcheckService,
+    private orderService: OrderService) {
     this.healthService.healthCheckJob();
   }
 
@@ -30,12 +33,15 @@ export class AppComponent implements OnInit {
     this.initForm();
   }
 
-  private initForm(): void{
+  private initForm(): void {
     this.orderFormular = new FormGroup({
-      name: new FormControl(null),
+      firstname: new FormControl(null),
+      lastname: new FormControl(null),
       email: new FormControl(null),
       phone: new FormControl(null),
       street: new FormControl(null),
+      building: new FormControl(null),
+      flat: new FormControl(null),
       city: new FormControl(null),
       zip: new FormControl(null)
     });
@@ -91,7 +97,6 @@ export class AppComponent implements OnInit {
   }
 
   public onOpenModal(mode: string): void {
-    console.log('CART ONMODAL');
     const container = document.getElementById('main-container');
     const button = document.createElement('button');
     button.type = 'button';
@@ -104,14 +109,26 @@ export class AppComponent implements OnInit {
       button.setAttribute('data-target', '#orderModal');
     }
     if (container != null) {
-      console.log('container no null' + container);
       container.appendChild(button);
     }
     button.click();
   }
 
   public onOrderSubmit(): void {
-    console.log('FORMULAR VIEW');
-    console.log(this.orderFormular);
+    console.log("Recevied form {}", this.orderFormular.value)
+    this.orderService.submitOrder(this.orderFormular, this.cartItemList)
+      .subscribe({
+        next: response => {
+          console.log("Order submited")
+          document.getElementById('cancel-order-button')?.click();
+          this.clearCart();
+          document.getElementById('close-cart-button')?.click();
+          this.getCatalog();
+        },
+        error: (err: HttpErrorResponse) => {
+          console.error("Submiting order error: " + err.message);
+          // pop up windows with error.
+        }
+      });
   }
 }
