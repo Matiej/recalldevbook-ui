@@ -29,7 +29,10 @@
             class="nav-link active"
             style="margin-right: 10px; color: white"
           >
-            <i class="fa fa-shopping-cart" aria-hidden="true"
+            <i
+              class="fa fa-shopping-cart"
+              aria-hidden="true"
+              [ngStyle]="{ color: countCartItems() > 0 ? 'red' : 'white' }"
               ><img /> Cart ({{ countCartItems() }})</i
             >
           </a>
@@ -229,21 +232,33 @@
         </div>
         <div class="modal-body">
           <form [formGroup]="orderFormular" (ngSubmit)="onOrderSubmit()">
-            <div class="form-group">
-              <div class="form-group">
-                <label for="nameField">Name</label>
+            <div class="form-row mb-4">
+              <div class="col">
+                <label for="nameField">First name</label>
                 <input
-                  formControlName="name"
-                  placeholder="firstname and lastname"
+                  formControlName="firstname"
+                  placeholder="firstname"
                   type="text"
                   class="form-control"
                   id="nameField"
                   required
                 />
               </div>
+              <div class="col">
+                <label for="lastnameField">Last name</label>
+                <input
+                  formControlName="lastname"
+                  placeholder="lastname"
+                  type="text"
+                  class="form-control"
+                  id="lastnameField"
+                  required
+                />
+              </div>
+            </div>
+            <div class="form-group">
               <label for="emailField">Email address</label>
               <input
-                n
                 formControlName="email"
                 placeholder="email address"
                 type="email"
@@ -267,13 +282,38 @@
               <label for="streetField">Street</label>
               <input
                 formControlName="street"
-                placeholder="street and build numer/flat"
+                placeholder="street"
                 type="text"
                 class="form-control"
                 id="streetField"
                 required
               />
             </div>
+
+            <div class="form-row mb-4">
+              <div class="col">
+                <label for="buildingField">Building number</label>
+                <input
+                  formControlName="building"
+                  placeholder="building number"
+                  type="text"
+                  class="form-control"
+                  id="buildingnumber"
+                  required
+                />
+              </div>
+              <div class="col">
+                <label for="flatField">Flat number</label>
+                <input
+                  formControlName="flat"
+                  placeholder="flat number"
+                  type="text"
+                  class="form-control"
+                  id="flatfiled"
+                />
+              </div>
+            </div>
+
             <div class="form-group">
               <label for="cityField">City</label>
               <input
