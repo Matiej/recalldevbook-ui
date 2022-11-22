@@ -37,8 +37,25 @@
             >
           </a>
         </li>
-        <li class="nav-item active mr-3">
-          <a class="nav-link" href="#">Add Book</a>
+        <li class="nav-item">
+          <a
+            class="nav-link active mr-2"
+            href="#"
+            tabindex="-1"
+            aria-disabled="false"
+            >{{ logButtonName }}</a
+          >
+        </li>
+        <li class="nav-item">
+          <a
+            class="nav-link active mr-2"
+            href="#"
+            tabindex="-1"
+            aria-disabled="false"
+            routerLinkActive="active"
+            (click)="onOpenModal('register')"
+            >Sign Up</a
+          >
         </li>
         <li class="nav-item">
           <a
@@ -46,7 +63,7 @@
             href="#"
             tabindex="-1"
             aria-disabled="true"
-            >Disabled</a
+            >Orders</a
           >
         </li>
       </ul>
@@ -89,6 +106,7 @@
       <img class="img-loading" src="assets/Loader1.gif" />
       <img class="img-loading" src="assets/loading10.gif" />
     </div>
+
     <div class="row">
       <div *ngFor="let book of bookList" class="col-md-6 col-xl-6">
         <div class="card m-b-30">
@@ -129,7 +147,7 @@
                 data-toggle="tooltip"
                 data-original-title="Add to Cart"
                 (click)="addToCart(book)"
-                ><i class="fa fa-cart-arrow-down"></i>
+                ><i class="fa fa-cart-arrow-down"></i> Add to Cart
               </a>
             </div>
           </div>
@@ -209,10 +227,10 @@
     </div>
   </div>
 
-  <!-- Modal ORDER-->
+  <!-- Modal ORDER/REGISTER-->
   <div
     class="modal fade"
-    id="orderModal"
+    id="formModal"
     tabindex="-1"
     role="dialog"
     aria-hidden="true"
@@ -220,7 +238,13 @@
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title">Order details</h5>
+          <h5
+            class="modal-title"
+            *ngIf="modalmode === 'order'; else registerForm"
+          >
+            Order details
+          </h5>
+          <ng-template #registerForm> Register formular </ng-template>
           <button
             type="button"
             class="close"
@@ -231,7 +255,32 @@
           </button>
         </div>
         <div class="modal-body">
-          <form [formGroup]="orderFormular" (ngSubmit)="onOrderSubmit()">
+          <form [formGroup]="formular" (ngSubmit)="onSubmit()">
+            <div *ngIf="modalmode === 'register'" class="form-row mb-4">
+              <div class="col">
+                <label for="userField">User</label>
+                <input
+                  formControlName="user"
+                  placeholder="enter email address"
+                  type="email"
+                  class="form-control"
+                  id="userField"
+                  required
+                />
+              </div>
+              <div class="col">
+                <label for="passField">Password</label>
+                <input
+                  formControlName="password"
+                  placeholder="enter min 3, max 100"
+                  type="password"
+                  class="form-control"
+                  id="passField"
+                  required
+                />
+              </div>
+            </div>
+
             <div class="form-row mb-4">
               <div class="col">
                 <label for="nameField">First name</label>
@@ -256,7 +305,7 @@
                 />
               </div>
             </div>
-            <div class="form-group">
+            <div *ngIf="modalmode === 'order'" class="form-group">
               <label for="emailField">Email address</label>
               <input
                 formControlName="email"
@@ -345,7 +394,16 @@
               >
                 Cancel
               </button>
-              <button type="submit" class="btn btn-primary">Submit</button>
+              <button
+                type="submit"
+                class="btn btn-primary"
+                *ngIf="modalmode === 'order'; else registerb"
+              >
+                Submit
+              </button>
+              <ng-template #registerb>
+                <button type="submit" class="btn btn-primary">Register</button>
+              </ng-template>
             </div>
           </form>
         </div>
