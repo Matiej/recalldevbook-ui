@@ -6,6 +6,7 @@ import { HealthcheckService } from './admin/healthcheck.service';
 import { CartItem } from './cart/cartitem';
 import { FormControl, FormGroup } from '@angular/forms';
 import { OrderService } from './order/order.service';
+import { RegisterService } from './register/register.service';
 
 @Component({
   selector: 'app-root',
@@ -19,11 +20,14 @@ export class AppComponent implements OnInit {
   public cartItemList: CartItem[] = [];
   private intervalId: any;
   private readonly INTERVAL_TIME: number = 3000;
-  orderFormular: FormGroup;
+  formular: FormGroup;
+  public logButtonName: string = "Log In";
+  public modalmode: string = "";
 
   constructor(private catalogServ: CatalogService,
     private healthService: HealthcheckService,
-    private orderService: OrderService) {
+    private orderService: OrderService,
+    private registerService: RegisterService) {
     this.healthService.healthCheckJob();
   }
 
@@ -34,7 +38,9 @@ export class AppComponent implements OnInit {
   }
 
   private initForm(): void {
-    this.orderFormular = new FormGroup({
+    this.formular = new FormGroup({
+      user: new FormControl(null),
+      password: new FormControl(null),
       firstname: new FormControl(null),
       lastname: new FormControl(null),
       email: new FormControl(null),
@@ -97,6 +103,7 @@ export class AppComponent implements OnInit {
   }
 
   public onOpenModal(mode: string): void {
+    this.modalmode = mode;
     const container = document.getElementById('main-container');
     const button = document.createElement('button');
     button.type = 'button';
@@ -105,8 +112,8 @@ export class AppComponent implements OnInit {
     if (mode === 'cart') {
       button.setAttribute('data-target', '#cartModal');
     }
-    if (mode === 'order') {
-      button.setAttribute('data-target', '#orderModal');
+    if (mode === 'order' || mode === 'register') {
+      button.setAttribute('data-target', '#formModal');
     }
     if (container != null) {
       container.appendChild(button);
@@ -114,9 +121,17 @@ export class AppComponent implements OnInit {
     button.click();
   }
 
-  public onOrderSubmit(): void {
-    console.log("Recevied form {}", this.orderFormular.value)
-    this.orderService.submitOrder(this.orderFormular, this.cartItemList)
+  public onSubmit(): void {
+    console.log("Recevied form {}", this.formular.value)
+    if (this.modalmode === 'order') {
+      this.orderSubmint();
+    } else {
+      this.registerSubmit();
+    }
+  }
+
+  private orderSubmint(): void {
+    this.orderService.submitOrder(this.formular, this.cartItemList)
       .subscribe({
         next: response => {
           console.log("Order submited")
@@ -131,4 +146,20 @@ export class AppComponent implements OnInit {
         }
       });
   }
+
+  private registerSubmit(): void {
+    this.registerService.registerUser(this.formular)
+      .subscribe({
+        next: response => {
+          console.log("User registered")
+          document.getElementById('cancel-order-button')?.click();
+          document.getElementById('close-cart-button')?.click();
+        },
+        error: (err: HttpErrorResponse) => {
+          console.error("Submiting register form error: " + err.message);
+          // pop up windows with error.
+        }
+      });
+  }
+
 }
