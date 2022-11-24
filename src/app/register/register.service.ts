@@ -11,14 +11,14 @@ import { Register } from './register';
 export class RegisterService {
 
   private apiServerUrl = environment.apiBaseUrl;
+  private readonly REGISTER_FULL: string = '/users/registerfull';
 
   constructor(private http: HttpClient) { }
 
   public registerUser(form: FormGroup): Observable<any> {
     const register: Register = this.toRegister(form);
     console.log(register);
-    return new Observable;
-    //return this.http.post<Register>(`${this.apiServerUrl}/register`, register)
+    return this.http.post<Register>(`${this.apiServerUrl}${this.REGISTER_FULL}`, register)
   }
 
   private toRegister(form: FormGroup): Register {
