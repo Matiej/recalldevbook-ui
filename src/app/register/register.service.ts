@@ -23,7 +23,7 @@ export class RegisterService {
 
   private toRegister(form: FormGroup): Register {
     return {
-      user: form.get('user')?.value,
+      username: form.get('user')?.value,
       password: form.get('password')?.value,
       passwordMatch: form.get('password')?.value,
       name: form.get('firstname')?.value,
