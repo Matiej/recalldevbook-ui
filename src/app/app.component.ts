@@ -138,6 +138,7 @@ export class AppComponent implements OnInit {
           document.getElementById('cancel-order-button')?.click();
           this.clearCart();
           document.getElementById('close-cart-button')?.click();
+          this.formular.reset();
           this.getCatalog();
         },
         error: (err: HttpErrorResponse) => {
@@ -154,9 +155,10 @@ export class AppComponent implements OnInit {
           console.log("User registered")
           document.getElementById('cancel-order-button')?.click();
           document.getElementById('close-cart-button')?.click();
+          this.formular.reset();
         },
         error: (err: HttpErrorResponse) => {
-          console.error("Submiting register form error: " + err.message);
+          console.error("Submiting register for m error: " + err.message);
           // pop up windows with error.
         }
       });
