@@ -37,16 +37,27 @@
             >
           </a>
         </li>
-        <li class="nav-item">
+        <li *ngIf="!isUserLogedIn()" class="nav-item">
           <a
             class="nav-link active mr-2"
             href="#"
             tabindex="-1"
             aria-disabled="false"
-            >{{ logButtonName }}</a
+            (click)="onOpenModal('login')"
+            >Log in
+          </a>
+        </li>
+        <li *ngIf="isUserLogedIn()" class="nav-item">
+          <a
+            class="nav-link active mr-2"
+            href="#"
+            tabindex="-1"
+            aria-disabled="false"
+            (click)="logOut()"
+            >Log out</a
           >
         </li>
-        <li class="nav-item">
+        <li *ngIf="!isUserLogedIn()" class="nav-item">
           <a
             class="nav-link active mr-2"
             href="#"
@@ -57,14 +68,8 @@
             >Sign Up</a
           >
         </li>
-        <li class="nav-item">
-          <a
-            class="nav-link disabled"
-            href="#"
-            tabindex="-1"
-            aria-disabled="true"
-            >Orders</a
-          >
+        <li *ngIf="!isUserLogedIn()" class="nav-item">
+          <a class="nav-link active mr-2" href="#" tabindex="-1">Orders</a>
         </li>
       </ul>
       <a
@@ -403,6 +408,76 @@
               </button>
               <ng-template #registerb>
                 <button type="submit" class="btn btn-primary">Register</button>
+              </ng-template>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal LOGIN-->
+  <div
+    class="modal fade"
+    id="loginModal"
+    tabindex="-1"
+    role="dialog"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Log in</h5>
+          <button
+            type="button"
+            class="close"
+            data-dismiss="modal"
+            aria-label="Close"
+          >
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form [formGroup]="formular" (ngSubmit)="onSubmit()">
+            <div class="form-row mb-4">
+              <div class="col">
+                <label for="userField">User</label>
+                <input
+                  formControlName="user"
+                  placeholder="enter email address"
+                  type="email"
+                  class="form-control"
+                  id="userField"
+                  autocomplete="false"
+                  required
+                />
+              </div>
+              <div class="col">
+                <label for="passField">Password</label>
+                <input
+                  formControlName="password"
+                  placeholder="enter min 3, max 100"
+                  type="password"
+                  class="form-control"
+                  id="passField"
+                  autocomplete="false"
+                  required
+                />
+              </div>
+            </div>
+
+            <div class="modal-footer">
+              <button
+                id="cancel-login-button"
+                type="button"
+                class="btn btn-secondary"
+                data-dismiss="modal"
+              >
+                Cancel
+              </button>
+              <button type="submit" class="btn btn-primary">Send</button>
+              <ng-template #registerb>
+                <button type="submit" class="btn btn-primary"></button>
               </ng-template>
             </div>
           </form>
