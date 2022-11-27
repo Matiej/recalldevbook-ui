@@ -7,6 +7,8 @@ import { CartItem } from './cart/cartitem';
 import { FormControl, FormGroup } from '@angular/forms';
 import { OrderService } from './order/order.service';
 import { RegisterService } from './register/register.service';
+import { AuthorizeService } from './authorize/authorize.service';
+
 
 @Component({
   selector: 'app-root',
@@ -23,11 +25,13 @@ export class AppComponent implements OnInit {
   formular: FormGroup;
   public logButtonName: string = "Log In";
   public modalmode: string = "";
+  public isLogged: boolean = false;
 
   constructor(private catalogServ: CatalogService,
     private healthService: HealthcheckService,
     private orderService: OrderService,
-    private registerService: RegisterService) {
+    private registerService: RegisterService,
+    private authService: AuthorizeService) {
     this.healthService.healthCheckJob();
   }
 
@@ -115,6 +119,9 @@ export class AppComponent implements OnInit {
     if (mode === 'order' || mode === 'register') {
       button.setAttribute('data-target', '#formModal');
     }
+    if (mode === 'login') {
+      button.setAttribute('data-target', '#loginModal');
+    }
     if (container != null) {
       container.appendChild(button);
     }
@@ -125,8 +132,10 @@ export class AppComponent implements OnInit {
     console.log("Recevied form {}", this.formular.value)
     if (this.modalmode === 'order') {
       this.orderSubmint();
-    } else {
+    } else if (this.modalmode == 'register') {
       this.registerSubmit();
+    } else {
+      this.loginSubmint();
     }
   }
 
@@ -158,10 +167,34 @@ export class AppComponent implements OnInit {
           this.formular.reset();
         },
         error: (err: HttpErrorResponse) => {
-          console.error("Submiting register for m error: " + err.message);
+          console.error("Submiting register error: " + err.message);
           // pop up windows with error.
         }
       });
+  }
+
+  private loginSubmint(): void {
+    this.authService.authenticate(this.formular)
+      .subscribe({
+        next: response => {
+          this.authService.setSessionItem('username');
+          document.getElementById('cancel-login-button')?.click();
+          this.formular.reset();
+        },
+        error: (err: HttpErrorResponse) => {
+          console.error("Login error: " + err.message);
+          // pop up windows with error.
+        }
+      });
+  }
+
+  public isUserLogedIn(): boolean {
+    return this.authService.isUserLoggedIn()
+  }
+
+  public logOut(): void {
+    console.log('loooooogouttttt')
+    this.authService.logout();
   }
 
 }
