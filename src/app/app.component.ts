@@ -184,6 +184,7 @@ export class AppComponent implements OnInit {
           document.getElementById('cancel-login-button')?.click();
           this.formular.reset();
           this.userSesionService.saveUserSesion(response);
+          window.location.reload()
         },
         error: (err: HttpErrorResponse) => {
           console.error("Login error: " + err.message);

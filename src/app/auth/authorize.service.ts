@@ -37,11 +37,6 @@ export class AuthorizeService {
     };
   }
 
-  public setSessionItem(user: AuthResponse): void {
-    window.sessionStorage.removeItem(this.USERNAME_ITEM_FOR_SESSION);
-    window.sessionStorage.setItem(this.USERNAME_ITEM_FOR_SESSION, JSON.stringify(user));
-  }
-
   public logout(): Observable<any> {
     return this.http.post<any>(`${this.apiServerUrl}/users/userlogout`,
       httpOptions);
