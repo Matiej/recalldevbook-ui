@@ -53,7 +53,7 @@
             href="#"
             tabindex="-1"
             aria-disabled="false"
-            (click)="logOut()"
+            (click)="onLogOut()"
             >Log out</a
           >
         </li>
@@ -68,8 +68,8 @@
             >Sign Up</a
           >
         </li>
-        <li *ngIf="!isUserLogedIn()" class="nav-item">
-          <a class="nav-link active mr-2" href="#" tabindex="-1">Orders</a>
+        <li *ngIf="isUserLogedIn()" (click)="forb()" class="nav-item">
+          <a class="nav-link active mr-2" href="#" tabindex="-1">User Board</a>
         </li>
       </ul>
       <a
