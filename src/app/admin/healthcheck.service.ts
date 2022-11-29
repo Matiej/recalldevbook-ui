@@ -18,7 +18,7 @@ export class HealthcheckService {
       this.cronHealthCheck,
       async () => {
         console.log('start backend healthcheck job');
-        this.admin();
+      //  this.admin();
       });
     if (!myJob.running) {
       myJob.start();

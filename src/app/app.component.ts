@@ -1,4 +1,4 @@
-import { HttpErrorResponse } from '@angular/common/http';
+import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Book } from './catalog/book';
 import { CatalogService } from './catalog/catalog.service';
@@ -7,7 +7,9 @@ import { CartItem } from './cart/cartitem';
 import { FormControl, FormGroup } from '@angular/forms';
 import { OrderService } from './order/order.service';
 import { RegisterService } from './register/register.service';
-import { AuthorizeService } from './authorize/authorize.service';
+import { AuthorizeService } from './auth/authorize.service';
+import { AuthResponse } from './auth/authresponse';
+import { UserSesionStorageService } from './auth/user-sesion-storage.service';
 
 
 @Component({
@@ -31,7 +33,9 @@ export class AppComponent implements OnInit {
     private healthService: HealthcheckService,
     private orderService: OrderService,
     private registerService: RegisterService,
-    private authService: AuthorizeService) {
+    private authService: AuthorizeService,
+    private userSesionService: UserSesionStorageService) {
+
     this.healthService.healthCheckJob();
   }
 
@@ -176,10 +180,10 @@ export class AppComponent implements OnInit {
   private loginSubmint(): void {
     this.authService.authenticate(this.formular)
       .subscribe({
-        next: response => {
-          this.authService.setSessionItem('username');
+        next: (response: AuthResponse) => {
           document.getElementById('cancel-login-button')?.click();
           this.formular.reset();
+          this.userSesionService.saveUserSesion(response);
         },
         error: (err: HttpErrorResponse) => {
           console.error("Login error: " + err.message);
@@ -189,12 +193,26 @@ export class AppComponent implements OnInit {
   }
 
   public isUserLogedIn(): boolean {
-    return this.authService.isUserLoggedIn()
+    return this.userSesionService.isUserLoggedIn()
   }
 
-  public logOut(): void {
-    console.log('loooooogouttttt')
-    this.authService.logout();
+  public onLogOut(): void {
+    this.authService.logout()
+      .subscribe({
+        next: (res: any) => {
+          this.userSesionService.removeItem();
+          console.log('logged out');
+        },
+        error: (err: HttpErrorResponse) => {
+          console.error('Loggin out erorr! => ' + err.message);
+        }
+      });
+    this.ngOnInit();
+  }
+
+  public forb(): void {
+    const forb: string = this.authService.forbidenRes();
+    window.alert(forb);
   }
 
 }
