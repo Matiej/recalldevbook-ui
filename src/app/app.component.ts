@@ -211,8 +211,7 @@ export class AppComponent implements OnInit {
   }
 
   public forb(): void {
-    const forb: string = this.authService.forbidenRes();
-    window.alert(forb);
+    this.authService.forbidenRes();
   }
 
 }
