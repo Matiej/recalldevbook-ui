@@ -54,7 +54,7 @@ export class AuthorizeService {
     }
     const hh = new HttpHeaders({ 'Content-Type': 'application/json' })
     this.http.post<AuthResponse>(`${this.apiServerUrl}/users/test`,
-      request, httpOptions).subscribe({
+      request, {'headers' :hh, withCredentials: true}).subscribe({
         next: rest => {
           window.alert('DATA FOR ONLY LOGGED USER: WORK IN PROGRESS');
         },
