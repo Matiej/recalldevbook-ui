@@ -47,22 +47,21 @@ export class AuthorizeService {
       httpOptions);
   }
 
-  public forbidenRes(): string {
+  public forbidenRes(): void {
     const request: AuthRequest = {
       username: 'testuser@testa.pl',
       password: 'testp@ssword'
     }
-
+    const hh = new HttpHeaders({ 'Content-Type': 'application/json' })
     this.http.post<AuthResponse>(`${this.apiServerUrl}/users/test`,
       request, httpOptions).subscribe({
         next: rest => {
-          console.log(rest);
+          window.alert('DATA FOR ONLY LOGGED USER: WORK IN PROGRESS');
         },
         error: (err: HttpErrorResponse) => {
           console.error(err.message);
         }
       });
-      return 'DATA FOR ONLY LOGGED USER: WORK IN PROGRESS'
   }
 
 
