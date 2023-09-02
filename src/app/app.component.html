@@ -72,14 +72,33 @@
           <a class="nav-link active mr-2" href="#" tabindex="-1">User Board</a>
         </li>
       </ul>
-      <a
-        class="btn btn-dark px-1"
-        target="_blank"
-        href="https://github.com/Matiej"
-        role="button"
-      >
-        <i class="icon"><img src="/assets/github-circle.png" /></i>
-      </a>
+      <div class="btn-group">
+        <button
+          type="button"
+          class="btn btn-dark dropdown-toggle px-4"
+          data-toggle="dropdown"
+          aria-haspopup="true"
+          aria-expanded="false"
+        >
+          <i class="icon"><img src="/assets/github-circle.png" /></i>
+        </button>
+        <div class="dropdown-menu">
+          <a
+            class="dropdown-item"
+            target="_blank"
+            href="https://github.com/Matiej/recalldevbook-ui"
+            role="button"
+          >GIT-frontend
+          </a>
+          <a
+          class="dropdown-item"
+          target="_blank"
+          href="https://github.com/Matiej/springRecallBookApp"
+          role="button"
+        >GIT-backend
+        </a>
+        </div>
+      </div>
       <a
         class="btn btn-dark px-4"
         target="_blank"
@@ -197,11 +216,11 @@
               >
             </h6>
             {{ item.quantity }} copies for $
-            {{ item.book.price | number: "1.2" }}
+            {{ item.book.price | number : "1.2" }}
             <hr />
           </div>
           <h5>Total order amount</h5>
-          <h4>$ {{ totalCartAmount() | number: "1.2" }}</h4>
+          <h4>$ {{ totalCartAmount() | number : "1.2" }}</h4>
         </div>
         <div class="modal-footer">
           <button
